@@ -1,0 +1,6 @@
+tweepy==4.14.0
+pandas
+nltk
+matplotlib
+seaborn
+scikit-learn
