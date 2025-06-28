@@ -14,11 +14,10 @@ from sklearn.metrics import classification_report, confusion_matrix
 from nltk.corpus import stopwords
 from nltk.tokenize import word_tokenize
 
-# Download necessary NLTK data
 nltk.download('punkt')
 nltk.download('stopwords')
 
-# ✨ Clean Tweet Function
+# Clean Tweet Function
 def clean_text(text):
     text = re.sub(r"http\S+|@\w+|#\w+|\d+", "", text)
     text = text.translate(str.maketrans("", "", string.punctuation))
@@ -27,7 +26,7 @@ def clean_text(text):
     tokens = [w for w in tokens if w not in stopwords.words("english")]
     return " ".join(tokens)
 
-# 🚀 Train the Sentiment Model
+# Training the model
 def train_model():
     df = pd.read_csv("https://raw.githubusercontent.com/dD2405/Twitter_Sentiment_Analysis/master/train.csv")
     df = df[['label', 'tweet']]
@@ -50,14 +49,14 @@ def train_model():
 
     return model, vectorizer
 
-# 🐦 Fetch Real-Time Tweets using Tweepy v2
+# Fetch real-time tweets using Tweepy v2
 def fetch_tweets(keyword, bearer_token, max_results=20):
     client = tweepy.Client(bearer_token=bearer_token)
     response = client.search_recent_tweets(query=keyword + " -is:retweet lang:en", max_results=max_results)
     tweets = [tweet.text for tweet in response.data] if response.data else []
     return tweets
 
-# 🔍 Analyze Sentiment of Tweets
+# Analysis
 def analyze_tweets(tweets, model, vectorizer):
     cleaned = [clean_text(tweet) for tweet in tweets]
     vectors = vectorizer.transform(cleaned)
@@ -73,10 +72,10 @@ def analyze_tweets(tweets, model, vectorizer):
     plt.title("Sentiment Analysis of Live Tweets")
     plt.show()
 
-# 🧠 Run the full pipeline
+# Running the pipeline
 if __name__ == "__main__":
-    BEARER_TOKEN = "Your Bearer Token"  # 🔁 Replace this with your actual token
-    keyword = "Modi"  # Change this to anything: "iPhone", "Elections", etc.
+    BEARER_TOKEN = "Your Bearer Token"  # Replace this with your actual bearer token
+    keyword = "AI"  # Change this to any keyword you want to fetch the tweets on
 
     model, vectorizer = train_model()
     tweets = fetch_tweets(keyword, BEARER_TOKEN, max_results=30)
